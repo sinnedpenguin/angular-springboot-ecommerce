@@ -21,7 +21,6 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap((response) => {
         localStorage.setItem('access_token', response.jwt);
-        console.log('AuthService: emitting loggedIn event');
         this.loggedIn.emit(true);
       })
     );
