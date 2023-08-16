@@ -2,14 +2,14 @@
   <h1 class="display-5">Login</h1>
   <div class="row justify-content-center">
     <div class="col-md-4">
-        <form>
+        <form (ngSubmit)="login()">
             <div class="mb-3">
               <label for="email">Email address</label>
-              <input type="email" class="form-control" id="email" #email>
+              <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email">
             </div>
             <div class="mb-3">
               <label for="password">Password</label>
-              <input type="password" class="form-control" id="password" #password>
+              <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password">
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>

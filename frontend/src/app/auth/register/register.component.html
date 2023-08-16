@@ -1,21 +1,21 @@
 <div class="container text-center">
-    <h1 class="display-5">Register</h1>
-    <div class="row justify-content-center">
-      <div class="col-md-4">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="email" placeholder="name@example.com">
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" id="password">
-        </div>
-        <div class="mb-3">
-            <label for="confirmPassword" class="form-label">Confirm password</label>
-            <input type="password" class="form-control" id="pasconfirmPasswordsword">
-          </div>
-        <button type="button" class="btn btn-primary">Register</button>
-      </div>
-    </div>
+  <h1 class="display-5">Register</h1>
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+        <form (ngSubmit)="register()">
+            <div class="mb-3">
+              <label for="email">Email address</label>
+              <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email">
+            </div>
+            <div class="mb-3">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password">
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword">Confirm password</label>
+              <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword">
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+  </div>
 </div>
-  
