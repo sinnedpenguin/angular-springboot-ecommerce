@@ -9,4 +9,4 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.SQLServerDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
