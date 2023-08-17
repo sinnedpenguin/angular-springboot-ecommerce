@@ -3,10 +3,9 @@ package com.angularspringbootecommerce.backend.dtos;
 import lombok.Data;
 
 @Data
-public class ProductDto {
+public class CartItemDto {
     private Long id;
-    private String name;
-    private String description;
+    private ProductDto product;
+    private int quantity;
     private double price;
-    private String imgUrl;
 }

@@ -2,6 +2,7 @@ package com.angularspringbootecommerce.backend.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -32,6 +33,14 @@ public class User implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name="role_id")}
     )
     private Set<UserRole> authorities;
+
+    @Getter
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 
     public User() {
         super();
