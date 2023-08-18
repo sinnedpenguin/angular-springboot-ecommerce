@@ -58,7 +58,7 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "USER");
                     auth.requestMatchers("/api/v1/products/all").permitAll();
                     auth.requestMatchers("/api/v1/products/add").hasRole("ADMIN");
-                    auth.requestMatchers("/api/v1/cart/{id}").hasAnyRole("ADMIN", "USER");
+                    auth.requestMatchers("/api/v1/cart/**").hasAnyRole("ADMIN", "USER");
                     auth.anyRequest().authenticated();
                 })
                 .oauth2ResourceServer(oauth2 -> oauth2

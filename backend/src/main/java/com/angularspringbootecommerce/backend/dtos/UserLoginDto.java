@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public class UserLoginDto {
 
+    private Long id;
     private User user;
     private String jwt;
 
@@ -13,16 +14,13 @@ public class UserLoginDto {
         super();
     }
 
-    public UserLoginDto(User user, String jwt) {
+    public UserLoginDto(Long id, User user, String jwt) {
+        this.id = id;
         this.user = user;
         this.jwt = jwt;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setJwt(String jwt) {
-        this.jwt = jwt;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

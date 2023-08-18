@@ -20,7 +20,9 @@ export class AuthService {
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap((response) => {
+        console.log('User ID:', response.user.id);
         localStorage.setItem('access_token', response.jwt);
+        localStorage.setItem('user_id', response.user.id);
         this.loggedIn.emit(true);
       })
     );

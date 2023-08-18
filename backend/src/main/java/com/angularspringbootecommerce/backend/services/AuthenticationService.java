@@ -56,10 +56,14 @@ public class AuthenticationService {
             String token = tokenService.generateJwt(auth);
 
             User user = userRepository.findByEmail(email).orElse(null);
-            return new UserLoginDto(user, token);
+            if (user != null) {
+                return new UserLoginDto(user.getId(), user, token); // Include the "id" field
+            } else {
+                return new UserLoginDto(null, null, "");
+            }
 
         } catch (AuthenticationException e) {
-            return new UserLoginDto(null, "");
+            return new UserLoginDto(null, null, "");
         }
     }
 }

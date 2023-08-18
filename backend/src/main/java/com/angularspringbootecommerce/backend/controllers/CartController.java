@@ -8,20 +8,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/cart")
+@CrossOrigin(origins = "*")
 public class CartController {
 
     private final CartService cartService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<CartDto> getCartByUserId(@PathVariable Long userId) {
+    public ResponseEntity<Map<String, Object>> getCartByUserId(@PathVariable Long userId) {
+        Map<String, Object> response = new HashMap<>();
         CartDto cartDto = cartService.getCartByUserId(userId);
         if (cartDto != null) {
-            return ResponseEntity.ok().body(cartDto);
+            response.put("cart", cartDto);
+            response.put("numberOfItemsInCart", cartService.getNumberOfItemsInCart(userId));
+            return ResponseEntity.ok().body(response);
         } else {
             throw new AppException("User's cart not found", HttpStatus.NOT_FOUND);
         }

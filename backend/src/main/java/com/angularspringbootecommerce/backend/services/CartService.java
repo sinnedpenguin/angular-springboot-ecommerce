@@ -56,6 +56,16 @@ public class CartService {
         }
     }
 
+    public int getNumberOfItemsInCart(Long userId) {
+        Optional<Cart> userCart = cartRepository.findByUserId(userId);
+        if (userCart.isPresent()) {
+            Cart cart = userCart.get();
+            return cart.getCartItems().size();
+        } else {
+            return 0;
+        }
+    }
+
     private static List<CartItemDto> getCartItemDto(Cart cart) {
         List<CartItemDto> cartItemDtos = new ArrayList<>();
         for (CartItem cartItem : cart.getCartItems()) {

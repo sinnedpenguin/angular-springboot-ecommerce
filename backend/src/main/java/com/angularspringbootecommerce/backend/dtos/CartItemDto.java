@@ -1,8 +1,6 @@
 package com.angularspringbootecommerce.backend.dtos;
 
-import com.angularspringbootecommerce.backend.models.CartItem;
 import lombok.Data;
-import lombok.Getter;
 
 import java.math.BigDecimal;
 
