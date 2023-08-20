@@ -20,12 +20,12 @@ export class RegisterComponent {
     }
     this.authService.register(this.email, this.password).subscribe({
       next: (response) => {
-        alert("Login successful!");
+        alert("Registration successful!");
         console.log(response);
         this.router.navigate(['/login']);
       },
       error: (error) => {
-        alert("Login failed!");
+        alert("Registration failed!");
         console.error(error);
       }
     });
