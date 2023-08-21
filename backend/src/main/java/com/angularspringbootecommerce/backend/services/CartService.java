@@ -19,9 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -43,22 +41,37 @@ public class CartService {
             cartDto.setUserId(cart.getUserId());
 
             List<CartItemDto> cartItemDtos = getCartItemDto(cart);
-            cartDto.setCartItems(cartItemDtos);
 
-            BigDecimal totalPrice = BigDecimal.ZERO;
+            Map<Long, CartItemDto> cartItemMap = new HashMap<>();
+
             for (CartItemDto cartItemDto : cartItemDtos) {
-                BigDecimal subTotal = cartItemDto.getPrice().multiply(BigDecimal.valueOf(cartItemDto.getQuantity()));
-                cartItemDto.setSubTotal(subTotal);
-                totalPrice = totalPrice.add(subTotal);
-
                 Long productId = cartItemDto.getProductId();
+                if (cartItemMap.containsKey(productId)) {
+                    CartItemDto existingItem = cartItemMap.get(productId);
+                    existingItem.setQuantity(existingItem.getQuantity() + cartItemDto.getQuantity());
+                    existingItem.setSubTotal(existingItem.getSubTotal().add(cartItemDto.getSubTotal()));
+                } else {
+                    cartItemMap.put(productId, cartItemDto);
+                }
+            }
+
+            List<CartItemDto> consolidatedCartItems = new ArrayList<>(cartItemMap.values());
+            cartDto.setCartItems(consolidatedCartItems);
+
+            for (CartItemDto consolidatedCartItem : consolidatedCartItems) {
+                Long productId = consolidatedCartItem.getProductId();
                 Product product = productRepository.findById(productId)
                         .orElseThrow(() -> new AppException("Product not found", HttpStatus.NOT_FOUND));
 
                 ProductDto productDto = new ProductDto();
                 productDto.setImgUrl(product.getImgUrl());
-                cartItemDto.setProduct(productDto);
+                consolidatedCartItem.setProduct(productDto);
             }
+
+            BigDecimal totalPrice = consolidatedCartItems.stream()
+                    .map(item -> item.getSubTotal())
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
             cartDto.setTotalPrice(totalPrice);
 
             return cartDto;
