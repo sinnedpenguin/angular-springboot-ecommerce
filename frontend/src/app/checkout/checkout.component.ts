@@ -8,15 +8,16 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class CheckoutComponent implements OnInit {
   cartItems: any[] = [];
+  totalPrice: number = 0; // Initialize total price
 
   constructor(private cartService: CartService) {}
-  
+
   ngOnInit() {
     console.log('Checkout component initialized.');
-  
+
     const userId = localStorage.getItem('user_id');
     const jwt = localStorage.getItem('access_token');
-  
+
     if (userId && jwt) {
       const userIdNumber = +userId;
       console.log('User ID number:', userIdNumber);
@@ -28,8 +29,10 @@ export class CheckoutComponent implements OnInit {
             productName: item.productName,
             price: item.price,
             quantity: item.quantity,
-            subTotal: item.subTotal
+            subTotal: item.subTotal,
+            imgUrl: item.product.imgUrl
           }));
+          this.totalPrice = cart.cart.totalPrice;
         },
         (error: any) => {
           console.error('Error fetching cart items:', error);

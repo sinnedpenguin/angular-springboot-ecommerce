@@ -2,6 +2,7 @@ package com.angularspringbootecommerce.backend.services;
 
 import com.angularspringbootecommerce.backend.dtos.CartDto;
 import com.angularspringbootecommerce.backend.dtos.CartItemDto;
+import com.angularspringbootecommerce.backend.dtos.ProductDto;
 import com.angularspringbootecommerce.backend.exceptions.AppException;
 import com.angularspringbootecommerce.backend.mappers.CartMapper;
 import com.angularspringbootecommerce.backend.models.Cart;
@@ -46,7 +47,17 @@ public class CartService {
 
             BigDecimal totalPrice = BigDecimal.ZERO;
             for (CartItemDto cartItemDto : cartItemDtos) {
-                totalPrice = totalPrice.add(cartItemDto.getSubTotal());
+                BigDecimal subTotal = cartItemDto.getPrice().multiply(BigDecimal.valueOf(cartItemDto.getQuantity()));
+                cartItemDto.setSubTotal(subTotal);
+                totalPrice = totalPrice.add(subTotal);
+
+                Long productId = cartItemDto.getProductId();
+                Product product = productRepository.findById(productId)
+                        .orElseThrow(() -> new AppException("Product not found", HttpStatus.NOT_FOUND));
+
+                ProductDto productDto = new ProductDto();
+                productDto.setImgUrl(product.getImgUrl());
+                cartItemDto.setProduct(productDto);
             }
             cartDto.setTotalPrice(totalPrice);
 
