@@ -21,7 +21,7 @@ export class CartComponent implements OnInit {
       const userIdNumber = +userId;
       console.log('User ID number:', userIdNumber);
   
-      this.cartService.getCartCount(userIdNumber).subscribe(
+      this.cartService.getCartItemsCount(userIdNumber).subscribe(
         (response: any) => {
           console.log('Response:', response);
           this.numberOfItemsInCart = response.numberOfItemsInCart;
@@ -34,5 +34,4 @@ export class CartComponent implements OnInit {
       console.error('User ID or JWT token not found in local storage.');
     }
   }
-  
 }

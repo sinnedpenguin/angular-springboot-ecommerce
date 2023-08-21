@@ -1,0 +1,20 @@
+<div class="text-center">
+  <table class="mx-auto">
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cartItem of cartItems">
+        <td class="card-title">{{ cartItem.productName }}</td>
+        <td class="card-text">Price: ${{ cartItem.price }}</td>
+        <td class="card-text">Quantity: {{ cartItem.quantity }}</td>
+        <td class="card-text">Subtotal: ${{ cartItem.subTotal }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

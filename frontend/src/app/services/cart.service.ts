@@ -10,8 +10,13 @@ export class CartService {
 
   constructor(private http: HttpClient) {}
 
-  getCartCount(userId: number): Observable<number> {
+  getCartItemsCount(userId: number): Observable<number> {
     const apiUrl = `${this.baseApiUrl}/cart/${userId}`;
     return this.http.get<number>(apiUrl);
+  }
+
+  getCartItems(userId: number): Observable<any[]> {
+    const apiUrl = `${this.baseApiUrl}/cart/${userId}`;
+    return this.http.get<any[]>(apiUrl);
   }
 }
