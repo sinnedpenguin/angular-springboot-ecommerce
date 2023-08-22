@@ -6,12 +6,15 @@ import com.angularspringbootecommerce.backend.models.Product;
 import com.angularspringbootecommerce.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1/products")
 public class ProductController {
 
@@ -40,5 +43,17 @@ public class ProductController {
         newProduct.setImgUrl(productDto.getImgUrl());
 
         return productService.add(newProduct);
+    }
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getProductById(@PathVariable Long productId) {
+        Optional<Product> productOptional = productService.getProductById(productId);
+
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            return ResponseEntity.ok(product);
+        } else {
+            throw new AppException("Product not found", HttpStatus.NOT_FOUND);
+        }
     }
 }

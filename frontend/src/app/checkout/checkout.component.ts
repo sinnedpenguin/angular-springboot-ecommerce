@@ -8,7 +8,7 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class CheckoutComponent implements OnInit {
   cartItems: any[] = [];
-  totalPrice: number = 0; // Initialize total price
+  totalPrice: number = 0;
 
   constructor(private cartService: CartService) {}
 
@@ -26,6 +26,7 @@ export class CheckoutComponent implements OnInit {
         (cart: any) => {
           console.log('Received cart data:', cart);
           this.cartItems = cart.cart.cartItems.map((item: any) => ({
+            productId: item.productId,
             productName: item.productName,
             price: item.price,
             quantity: item.quantity,

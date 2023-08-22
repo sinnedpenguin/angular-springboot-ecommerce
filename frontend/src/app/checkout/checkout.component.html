@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let cartItem of cartItems">
+          <tr *ngFor="let cartItem of cartItems" [routerLink]="['/product', cartItem.productId]" style="cursor: pointer;">
             <td class="align-middle">
               <img [src]="cartItem.imgUrl" alt="Product Image" class="product-image">
             </td>

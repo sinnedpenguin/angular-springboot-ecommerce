@@ -69,7 +69,7 @@ public class CartService {
             }
 
             BigDecimal totalPrice = consolidatedCartItems.stream()
-                    .map(item -> item.getSubTotal())
+                    .map(CartItemDto::getSubTotal)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
             cartDto.setTotalPrice(totalPrice);

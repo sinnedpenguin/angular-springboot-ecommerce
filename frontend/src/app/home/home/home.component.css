@@ -1,0 +1,5 @@
+#productImg {
+    max-height: 200px;
+    width: auto;
+    object-fit: contain;
+}
