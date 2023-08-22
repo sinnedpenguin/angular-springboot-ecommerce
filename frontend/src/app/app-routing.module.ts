@@ -5,13 +5,15 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ProductComponent } from './product/product.component';
+import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'checkout', component: CheckoutComponent },
-  { path: 'product/:id', component: ProductComponent }
+  { path: 'product/:id', component: ProductComponent },
+  { path: 'user', component: UserComponent }
 ];
 
 @NgModule({

@@ -55,7 +55,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/v1/auth/**").permitAll();
                     auth.requestMatchers("/api/v1/admin/**").hasRole("ADMIN");
-                    auth.requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "USER");
+                    auth.requestMatchers("/api/v1/user/**").permitAll();
                     auth.requestMatchers("/api/v1/products/all").permitAll();
                     auth.requestMatchers("/api/v1/products/{productId}").permitAll();
                     auth.requestMatchers("/api/v1/products/add").hasRole("ADMIN");

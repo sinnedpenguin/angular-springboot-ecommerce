@@ -24,7 +24,7 @@
               <app-cart></app-cart>
             </li>
             <li class="nav-item">
-              <a class="nav-link" routerLink="account">Account</a>
+              <a class="nav-link" routerLink="user">{{ userDetails?.email }}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="" (click)="logout()">Logout</a>

@@ -134,7 +134,7 @@ public class CartService {
         userCart.getCartItems().add(newItem);
 
         BigDecimal totalPrice = userCart.getCartItems().stream()
-                .map(item -> item.getPrice())
+                .map(CartItem::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         userCart.setTotalPrice(totalPrice);

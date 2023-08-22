@@ -57,7 +57,7 @@ public class AuthenticationService {
 
             User user = userRepository.findByEmail(email).orElse(null);
             if (user != null) {
-                return new UserLoginDto(user.getId(), user, token); // Include the "id" field
+                return new UserLoginDto(user.getId(), user, token);
             } else {
                 return new UserLoginDto(null, null, "");
             }
