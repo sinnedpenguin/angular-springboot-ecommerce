@@ -25,9 +25,6 @@ public class UserController {
 
     @PutMapping("/update/{userId}")
     public User updateUserById(@PathVariable Long userId, @RequestBody UserDto userDto, Authentication authentication) {
-        if (userDto.getEmail() == null || userDto.getEmail().isEmpty() || userDto.getPassword() == null || userDto.getPassword().isEmpty()) {
-            throw new AppException("All fields are required", HttpStatus.BAD_REQUEST);
-        }
         return userService.updateUserById(userId, userDto, authentication);
     }
 }

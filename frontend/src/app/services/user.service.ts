@@ -30,4 +30,14 @@ export class UserService {
     const url = `${this.baseUrl}/${userId}`;
     return this.http.get<User>(url, options);
   }
+
+  updateUser(userId: string, userDto: UserDto): Observable<User> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    const options = { headers };
+    const url = `${this.baseUrl}/update/${userId}`;
+    return this.http.put<User>(url, userDto, options);
+  }
 }

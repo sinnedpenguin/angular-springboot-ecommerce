@@ -2,14 +2,14 @@
   <h1 class="display-5">Account</h1>
   <div class="row justify-content-center">
     <div class="col-md-4">
-        <form>
+      <form (ngSubmit)="updateAccount()">
         <div class="mb-3">
           <label for="email">Email address</label>
           <input type="email" class="form-control" id="email" [(ngModel)]="userDetails.email" name="email">
         </div>
         <div class="mb-3">
           <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" name="password">
+          <input type="password" class="form-control" id="password" [(ngModel)]="userDetails.newPassword" name="password">
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
       </form>

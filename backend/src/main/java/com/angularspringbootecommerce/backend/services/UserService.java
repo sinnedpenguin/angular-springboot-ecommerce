@@ -45,10 +45,14 @@ public class UserService implements UserDetailsService {
         }
         String newEmail = userDto.getEmail();
         String newPassword = userDto.getPassword();
-        String hashedNewPassword = passwordEncoder.encode(newPassword);
 
-        user.setEmail(newEmail);
-        user.setPassword(hashedNewPassword);
+        if (newEmail != null && !newEmail.isEmpty()) {
+            user.setEmail(newEmail);
+        }
+        if (newPassword != null && !newPassword.isEmpty()) {
+            String hashedNewPassword = passwordEncoder.encode(newPassword);
+            user.setPassword(hashedNewPassword);
+        }
         userRepository.save(user);
         return user;
     }

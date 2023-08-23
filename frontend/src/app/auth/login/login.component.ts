@@ -15,9 +15,7 @@ export class LoginComponent {
 
   login() {
     this.authService.login(this.email, this.password).subscribe({
-      next: (response) => {
-        alert("Login successful!");
-        console.log(response);
+      next: () => {
         this.router.navigate(['']);
       },
       error: (error) => {
