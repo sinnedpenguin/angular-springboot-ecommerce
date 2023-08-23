@@ -30,4 +30,15 @@ export class ProductComponent implements OnInit {
         }
       );
   }
+
+  addToCart(productId: number, quantity: number) {
+    this.productService.addToCart(productId, quantity).subscribe(
+      response => {
+        console.log('Product added to cart:', response);
+      },
+      error => {
+        console.error('Error adding product to cart:', error);
+      }
+    );
+  }
 }

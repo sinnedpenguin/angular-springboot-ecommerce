@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Product {
@@ -27,6 +27,12 @@ export class ProductService {
   }
 
   addToCart(productId: number, quantity: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/add-to-cart/${productId}/${quantity}`, {});
+    const userId = localStorage.getItem('user_id');
+
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + localStorage.getItem('access_token')
+    });
+
+    return this.http.post(`http://localhost:8080/api/v1/cart/${userId}/${productId}/${quantity}`, {}, { headers });
   }
 }
