@@ -84,7 +84,9 @@ public class CartService {
         Optional<Cart> userCart = cartRepository.findByUserId(userId);
         if (userCart.isPresent()) {
             Cart cart = userCart.get();
-            return cart.getCartItems().size();
+            return cart.getCartItems().stream()
+                    .mapToInt(CartItem::getQuantity)
+                    .sum();
         } else {
             return 0;
         }

@@ -31,7 +31,7 @@ public class AuthenticationController {
         UserLoginDto userLoginDto = authenticationService.login(user.getEmail(), user.getPassword());
 
         if (userLoginDto.getUser() == null) {
-            throw new AppException("Account not found.", HttpStatus.NOT_FOUND);
+            throw new AppException("Invalid credentials.", HttpStatus.NOT_FOUND);
         }
 
         return userLoginDto;
