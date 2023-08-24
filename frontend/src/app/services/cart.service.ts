@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface CartItem {
+  imgUrl: any;
   productId: number;
   productName: string;
   quantity: number;
@@ -30,5 +31,10 @@ export class CartService {
   getCartItems(userId: number): Observable<CartItem[]> {
     const apiUrl = `${this.baseApiUrl}/cart/${userId}`;
     return this.http.get<CartItem[]>(apiUrl);
+  }
+
+  removeCartItem(userId: number, productId: number): Observable<CartItem[]> {
+    const apiUrl = `${this.baseApiUrl}/cart/${userId}/${productId}`;
+    return this.http.delete<CartItem[]>(apiUrl);
   }
 }

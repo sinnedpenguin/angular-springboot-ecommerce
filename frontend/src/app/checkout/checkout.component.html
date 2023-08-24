@@ -9,17 +9,21 @@
             <th>Price</th>
             <th>Quantity</th>
             <th>Sub-Total</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let cartItem of cartItems" [routerLink]="['/product', cartItem.productId]" style="cursor: pointer;">
+          <tr *ngFor="let cartItem of cartItems">
             <td class="align-middle">
-              <img [src]="cartItem.imgUrl" alt="Product Image" class="product-image">
+              <img [src]="cartItem.imgUrl" alt="Product Image" class="product-image" [routerLink]="['/product', cartItem.productId]" style="cursor: pointer;">
             </td>
-            <td class="align-middle">{{ cartItem.productName }}</td>
-            <td class="align-middle">${{ cartItem.price }}</td>
-            <td class="align-middle">x{{ cartItem.quantity }}</td>
-            <td class="align-middle">${{ cartItem.subTotal }}</td>
+            <td class="align-middle" [routerLink]="['/product', cartItem.productId]" style="cursor: pointer;">{{ cartItem.productName }}</td>
+            <td class="align-middle" [routerLink]="['/product', cartItem.productId]" style="cursor: pointer;">${{ cartItem.price }}</td>
+            <td class="align-middle" [routerLink]="['/product', cartItem.productId]" style="cursor: pointer;">x{{ cartItem.quantity }}</td>
+            <td class="align-middle" [routerLink]="['/product', cartItem.productId]" style="cursor: pointer;">${{ cartItem.subTotal }}</td>
+            <td class="align-middle">
+              <button class="btn btn-danger" (click)="removeCartItem(cartItem.productId); false">X</button>
+            </td>
           </tr>
         </tbody>
       </table>

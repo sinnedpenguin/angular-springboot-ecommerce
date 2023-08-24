@@ -107,7 +107,7 @@ public class CartService {
         return cartItemDtos;
     }
 
-    public CartDto addToCart(Long userId, Long productId, int quantity) {
+    public CartDto addItemToCart(Long userId, Long productId, int quantity) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
 
@@ -154,6 +154,34 @@ public class CartService {
                     return itemDto;
                 }).collect(Collectors.toList());
 
+        return CartMapper.INSTANCE.cartToCartDto(userCart, totalPrice, cartItemDtos);
+    }
+
+    public CartDto removeItemFromCart(Long userId, Long productId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException("Product not found", HttpStatus.NOT_FOUND));
+
+        Cart userCart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new AppException("Cart not found", HttpStatus.NOT_FOUND));
+
+        CartItem cartItemToRemove = userCart.getCartItems().stream()
+                .filter(item -> item.getProductId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new AppException("Cart item not found", HttpStatus.NOT_FOUND));
+
+        userCart.getCartItems().remove(cartItemToRemove);
+        cartItemRepository.delete(cartItemToRemove);
+
+        BigDecimal totalPrice = userCart.getCartItems().stream()
+                .map(CartItem::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        userCart.setTotalPrice(totalPrice);
+        cartRepository.save(userCart);
+
+        List<CartItemDto> cartItemDtos = getCartItemDto(userCart);
         return CartMapper.INSTANCE.cartToCartDto(userCart, totalPrice, cartItemDtos);
     }
 }

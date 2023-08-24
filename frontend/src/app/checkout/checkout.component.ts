@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService } from 'src/app/services/cart.service';
+import { CartItem, CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -41,6 +41,22 @@ export class CheckoutComponent implements OnInit {
       );
     } else {
       console.error('User ID or JWT token not found in local storage.');
+    }
+  }
+
+  removeCartItem(productId: number) {
+    const userId = localStorage.getItem('user_id');
+
+    if (userId) {
+      this.cartService.removeCartItem(+userId, productId).subscribe(
+        (updatedCartItems: CartItem[]) => {
+          this.cartItems = updatedCartItems;
+          window.location.reload();
+        },
+        (error: any) => {
+          console.error('Error removing cart item:', error);
+        }
+      );
     }
   }
 }
