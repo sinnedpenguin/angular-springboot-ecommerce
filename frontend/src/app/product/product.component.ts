@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService, Product } from 'src/app/services/product.service';
+import { CartService } from '../services/cart.service';
 import { catchError } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 
@@ -13,7 +14,12 @@ export class ProductComponent implements OnInit {
   product: Product | null = null;
   selectedQuantity: number = 1;
 
-  constructor(private route: ActivatedRoute, private productService: ProductService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private productService: ProductService,
+    private cartService: CartService,
+    private cdRef: ChangeDetectorRef,
+  ) {}
 
   ngOnInit() {
     const productId = this.route.snapshot.params['id'];
@@ -35,8 +41,23 @@ export class ProductComponent implements OnInit {
     this.productService.addToCart(productId, quantity).subscribe(
       response => {
         console.log('Product added to cart:', response);
+  
+        const userId = localStorage.getItem('user_id');
+  
+        if (userId) {
+          this.cartService.getCartItemsCount(+userId).subscribe(
+            (count: number) => {
+              this.cartService.updateCartItemCount(count);
+              this.cdRef.detectChanges(); 
+              window.location.reload();
+            },
+            (error: any) => {
+              console.error('Error fetching cart count:', error);
+            }
+          );
+        }
       },
-      error => {
+      (error: any) => {
         console.error('Error adding product to cart:', error);
       }
     );

@@ -33,6 +33,6 @@ export class ProductService {
       Authorization: 'Bearer ' + localStorage.getItem('access_token')
     });
 
-    return this.http.post(`http://localhost:8080/api/v1/cart/${userId}/${productId}/${quantity}`, {}, { headers });
+    return this.http.post<number>(`http://localhost:8080/api/v1/cart/${userId}/${productId}/${quantity}`, {}, { headers });
   }
 }
