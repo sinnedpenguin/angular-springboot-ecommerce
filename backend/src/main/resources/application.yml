@@ -10,3 +10,5 @@ spring:
       hibernate.dialect: org.hibernate.dialect.SQLServerDialect
     hibernate:
       ddl-auto: update
+stripe:
+  secret-key: sk_test_51NiZKsLtTFoBOb8wTg4V2C3bJqrQ53qMHLusPXct6hp0O3yNtHXfEITKl7bLHNPRG7Egk28A5d1X7H4yoCvUl5kF00OP3VpgCr
