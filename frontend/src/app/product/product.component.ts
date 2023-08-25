@@ -47,6 +47,7 @@ export class ProductComponent implements OnInit {
         if (userId) {
           this.cartService.getCartItemsCount(+userId).subscribe(
             (count: number) => {
+              alert("Product added to cart.");
               this.cartService.updateCartItemCount(count);
               this.cdRef.detectChanges(); 
               window.location.reload();
