@@ -2,11 +2,9 @@ package com.angularspringbootecommerce.backend.controllers;
 
 
 import com.angularspringbootecommerce.backend.dtos.UserDto;
-import com.angularspringbootecommerce.backend.exceptions.AppException;
 import com.angularspringbootecommerce.backend.models.User;
 import com.angularspringbootecommerce.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
