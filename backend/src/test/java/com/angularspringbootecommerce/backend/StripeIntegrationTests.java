@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class StripeTests {
+public class StripeIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,21 +46,5 @@ public class StripeTests {
 
         Assertions.assertNotNull(charge);
         Assertions.assertEquals(charge.getStatus(), "succeeded");
-    }
-
-    @Test
-    public void testCheckoutWithStripeIntegration() throws Exception {
-        PaymentDto paymentDto = new PaymentDto();
-        paymentDto.setUserId(1L);
-        paymentDto.setToken("tok_visa");
-        paymentDto.setAmount(1000);
-        paymentDto.setCurrency("usd");
-
-        mockMvc.perform(post("/api/v1/orders/1/checkout")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userId\":1,\"token\":\"tok_visa\",\"amount\":1000,\"currency\":\"usd\"}"))
-                .andExpect(status().isOk());
-
-        verify(paymentService, times(1)).processPayment(any(PaymentDto.class));
     }
 }

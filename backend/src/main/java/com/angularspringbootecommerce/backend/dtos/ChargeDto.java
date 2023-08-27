@@ -4,11 +4,15 @@ import lombok.Data;
 
 @Data
 public class ChargeDto {
-    private String token;
-    private double amount;
+    private String id;
+    private Long amount;
     private String currency;
-    private String description;
-    private String chargedTo;
+    private String status;
+
     public ChargeDto(String id, Long amount, String currency, String status) {
+        this.id = id;
+        this.amount = amount;
+        this.currency = currency;
+        this.status = status;
     }
 }
