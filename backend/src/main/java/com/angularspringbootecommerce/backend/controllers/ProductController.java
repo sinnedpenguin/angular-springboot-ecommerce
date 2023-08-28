@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class ProductController {
                 productDto.getName().isEmpty() ||
                 productDto.getDescription() == null || productDto.getDescription().isEmpty() ||
                 productDto.getImgUrl() == null || productDto.getImgUrl().isEmpty() ||
-                productDto.getPrice() == 0) {
+                productDto.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
 
             throw new AppException("All fields are required.", HttpStatus.BAD_REQUEST);
         }

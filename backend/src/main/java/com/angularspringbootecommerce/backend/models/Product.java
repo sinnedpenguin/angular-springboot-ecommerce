@@ -3,6 +3,8 @@ package com.angularspringbootecommerce.backend.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Table(name = "products")
@@ -13,6 +15,6 @@ public class Product {
     private Long id;
     private String name;
     private String description;
-    private double price;
+    private BigDecimal price;
     private String imgUrl;
 }

@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
-@NoArgsConstructor
 @Entity
 @Table(name = "order_items")
 public class OrderItem {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,11 +27,4 @@ public class OrderItem {
 
     @Column(name = "price")
     private BigDecimal price;
-
-    public OrderItem(Order order, Product product, int quantity, BigDecimal price) {
-        this.order = order;
-        this.product = product;
-        this.quantity = quantity;
-        this.price = price;
-    }
 }

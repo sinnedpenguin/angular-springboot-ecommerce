@@ -23,12 +23,9 @@ public class Order {
     @Column(name = "date_created")
     private Date dateCreated;
 
-    @Column(name = "status")
-    private String status;
-
     @Column(name = "total")
     private BigDecimal total;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 }

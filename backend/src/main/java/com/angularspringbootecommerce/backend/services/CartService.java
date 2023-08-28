@@ -114,7 +114,7 @@ public class CartService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found", HttpStatus.NOT_FOUND));
 
-        BigDecimal itemPrice = BigDecimal.valueOf(product.getPrice()).multiply(BigDecimal.valueOf(quantity));
+        BigDecimal itemPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
 
         Optional<Cart> optionalCart = cartRepository.findByUserId(userId);
         Cart userCart = optionalCart.orElse(new Cart());

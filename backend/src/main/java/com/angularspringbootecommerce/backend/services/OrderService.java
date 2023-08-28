@@ -1,22 +1,16 @@
 package com.angularspringbootecommerce.backend.services;
 
-import com.angularspringbootecommerce.backend.dtos.CartDto;
-import com.angularspringbootecommerce.backend.dtos.CartItemDto;
-import com.angularspringbootecommerce.backend.dtos.OrderDto;
-import com.angularspringbootecommerce.backend.dtos.ProductDto;
+import com.angularspringbootecommerce.backend.dtos.*;
 import com.angularspringbootecommerce.backend.exceptions.AppException;
-import com.angularspringbootecommerce.backend.models.Order;
-import com.angularspringbootecommerce.backend.models.OrderItem;
-import com.angularspringbootecommerce.backend.models.Product;
-import com.angularspringbootecommerce.backend.models.User;
-import com.angularspringbootecommerce.backend.repository.OrderRepository;
-import com.angularspringbootecommerce.backend.repository.ProductRepository;
-import com.angularspringbootecommerce.backend.repository.UserRepository;
+import com.angularspringbootecommerce.backend.models.*;
+import com.angularspringbootecommerce.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,48 +33,40 @@ public class OrderService {
         }
 
         List<Order> orders = orderRepository.findAllByUserId(userId);
-        return orders.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+        List<OrderDto> orderDtos = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (Order order : orders) {
+            OrderDto orderDto = new OrderDto();
+            orderDto.setId(order.getId());
+            orderDto.setTotal(order.getTotal());
+            String dateCreatedStr = dateFormat.format(order.getDateCreated());
+            orderDto.setDateCreated(dateCreatedStr);
+            orderDtos.add(orderDto);
+        }
+        return orderDtos;
     }
 
-    private OrderDto convertToDto(Order order) {
-        OrderDto orderDto = new OrderDto();
-        orderDto.setId(order.getId());
-        orderDto.setDateCreated(order.getDateCreated().toString());
-        orderDto.setTotal(order.getTotal());
-        return orderDto;
-    }
+    public Order createOrderFromCart(CartDto cart, Long userId, Authentication authentication) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
 
-    public Order createOrderFromCart(CartDto cart, Long userId) {
-        Order order = new Order();
-
-        order.setDateCreated(new Date());
-        order.setTotal(cart.getTotalPrice());
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new AppException("User not found.", HttpStatus.NOT_FOUND));
-        order.setUser(user);
-
-        List<OrderItem> orderItems = new ArrayList<>();
-
-        for (CartItemDto cartItemDto : cart.getCartItems()) {
-            ProductDto productDto = cartItemDto.getProduct();
-            Product product = productRepository.findById(productDto.getId())
-                    .orElseThrow(() -> new AppException("Product not found.", HttpStatus.NOT_FOUND));
-
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(product);
-            orderItem.setQuantity(cartItemDto.getQuantity());
-            orderItem.setPrice(cartItemDto.getPrice());
-            orderItem.setOrder(order);
-            orderItems.add(orderItem);
+        if (authentication == null || !user.getEmail().equals(authentication.getName())) {
+            throw new AppException("Access denied.", HttpStatus.BAD_REQUEST);
         }
 
+        Order order = new Order();
+        order.setUser(user);
+        order.setTotal(cart.getTotalPrice());
+        order.setDateCreated(new Date());
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (CartItemDto cartItem : cart.getCartItems()) {
+            OrderItem orderItem = new OrderItem();
+            Product product = productRepository.findById(cartItem.getProductId()).orElseThrow(() -> new AppException("Product not found", HttpStatus.NOT_FOUND));
+            orderItem.setProduct(product);
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItems.add(orderItem);
+        }
         order.setOrderItems(orderItems);
-
-        order = orderRepository.save(order);
-
-        return order;
+        return orderRepository.save(order);
     }
+
 }

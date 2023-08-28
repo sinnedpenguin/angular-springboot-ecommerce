@@ -1,5 +1,6 @@
 package com.angularspringbootecommerce.backend.controllers;
 
+import com.angularspringbootecommerce.backend.dtos.CartDto;
 import com.angularspringbootecommerce.backend.dtos.OrderDto;
 import com.angularspringbootecommerce.backend.dtos.PaymentDto;
 import com.angularspringbootecommerce.backend.models.Order;
@@ -30,13 +31,14 @@ public class OrderController {
     }
 
     @PostMapping("/{userId}/checkout")
-    public ResponseEntity<PaymentDto> checkout(@PathVariable Long userId) throws StripeException {
-        BigDecimal totalPrice = cartService.getCartByUserId(userId).getTotalPrice();
+    public ResponseEntity<PaymentDto> checkout(@PathVariable Long userId, Authentication authentication) throws StripeException {
+        CartDto cart = cartService.getCartByUserId(userId);
+        BigDecimal totalPrice = cart.getTotalPrice();
         PaymentIntent paymentIntent = paymentService.createPaymentIntent(totalPrice);
 
-        cartService.clearCart(userId);
+        Order createdOrder = orderService.createOrderFromCart(cart, userId, authentication);
 
-        Order createdOrder = orderService.createOrderFromCart(cartService.getCartByUserId(userId), userId);
+        cartService.clearCart(userId);
 
         PaymentDto paymentDto = new PaymentDto(paymentIntent.getClientSecret(), totalPrice, "usd", createdOrder.getId());
 
