@@ -1,33 +1,16 @@
 package com.angularspringbootecommerce.backend;
 
-import com.angularspringbootecommerce.backend.dtos.PaymentDto;
-import com.angularspringbootecommerce.backend.services.PaymentService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 public class StripeIntegrationTests {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Mock
-    private PaymentService paymentService;
 
     @BeforeAll
     static void setupTest() {

@@ -184,4 +184,18 @@ public class CartService {
         List<CartItemDto> cartItemDtos = getCartItemDto(userCart);
         return CartMapper.INSTANCE.cartToCartDto(userCart, totalPrice, cartItemDtos);
     }
+
+    public Cart getCartEntityByUserId(Long userId) {
+        return cartRepository.findByUserId(userId).orElseThrow(() ->
+                new AppException("Cart not found for user id: " + userId, HttpStatus.NOT_FOUND));
+    }
+
+    public void clearCart(Long userId) {
+        Cart cart = getCartEntityByUserId(userId);
+        if (cart != null) {
+            cart.getCartItems().clear();
+            cart.setTotalPrice(BigDecimal.ZERO);
+            cartRepository.save(cart);
+        }
+    }
 }

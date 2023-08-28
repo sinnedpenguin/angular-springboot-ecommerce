@@ -60,8 +60,8 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/api/v1/products/{productId}").permitAll();
                     auth.requestMatchers("/api/v1/products/add").hasRole("ADMIN");
                     auth.requestMatchers("/api/v1/cart/**").permitAll();
-                    auth.requestMatchers("/api/v1/payments/**").permitAll();
-                    auth.requestMatchers("/api/v1/orders/**").hasAnyRole("ADMIN", "USER");
+                    auth.requestMatchers("/api/v1/payments/**").hasAnyRole("ADMIN", "PASSWORD");
+                    auth.requestMatchers("/api/v1/orders/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .oauth2ResourceServer(oauth2 -> oauth2

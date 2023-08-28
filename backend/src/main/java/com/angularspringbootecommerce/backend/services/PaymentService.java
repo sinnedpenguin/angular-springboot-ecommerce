@@ -1,38 +1,30 @@
 package com.angularspringbootecommerce.backend.services;
 
-import com.angularspringbootecommerce.backend.dtos.ChargeDto;
-import com.angularspringbootecommerce.backend.dtos.PaymentDto;
-import com.angularspringbootecommerce.backend.exceptions.AppException;
-import com.angularspringbootecommerce.backend.models.Order;
-import com.angularspringbootecommerce.backend.repository.OrderRepository;
+import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import com.stripe.model.PaymentIntent;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class PaymentService {
-    private final OrderRepository orderRepository;
 
-    public ChargeDto processPayment(PaymentDto payment) {
-        try {
-            Charge stripeCharge = Charge.create(payment.toChargeParams());
+    @Value("${stripe.secret-key}")
+    private String stripeSecretKey;
 
-            if (stripeCharge.getStatus().equals("succeeded")) {
-                Long orderId = ((Map<String, Long>) payment.getMetadata()).get("orderId");
-                Order order = orderRepository.findById(orderId)
-                        .orElseThrow(() -> new AppException("Order not found", HttpStatus.NOT_FOUND));
-                order.setStatus("paid");
-                orderRepository.save(order);
-            }
+    public PaymentIntent createPaymentIntent(BigDecimal amount) throws StripeException {
+        Stripe.apiKey = stripeSecretKey;
 
-            return new ChargeDto(stripeCharge.getId(), stripeCharge.getAmount(), stripeCharge.getCurrency(), stripeCharge.getStatus());
-        } catch (StripeException e) {
-            throw new AppException(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("amount", amount.multiply(BigDecimal.valueOf(100)).intValue());
+        params.put("currency", "usd");
+        params.put("payment_method_types", Collections.singletonList("card"));
+
+        return PaymentIntent.create(params);
     }
 }
