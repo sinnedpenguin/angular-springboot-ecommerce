@@ -13,6 +13,7 @@ import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ProductComponent } from './product/product.component';
 import { UserComponent } from './user/user.component';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { UserComponent } from './user/user.component';
     CheckoutComponent,
     ProductComponent,
     UserComponent,
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,
