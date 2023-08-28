@@ -4,16 +4,16 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class PaymentService {
+export class OrderService {
   private apiUrl = 'http://localhost:8080/api/v1/orders';
 
   constructor(private http: HttpClient) {}
 
-  checkout(userId: string, access_token: string, paymentMethodId: string) {
+  getOrdersByUserId(userId: string, access_token: string) {
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + access_token
     });
 
-    return this.http.post(`${this.apiUrl}/${userId}/checkout`, { paymentMethodId }, { headers });
+    return this.http.get(`${this.apiUrl}/${userId}`, { headers });
   }
 }
