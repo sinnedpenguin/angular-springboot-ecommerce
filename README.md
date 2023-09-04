@@ -1,3 +1,3 @@
-# Angular-Springboot Ecommerce
+# Angular-Spring Boot Ecommerce
 
-An Angular-Springboot ecommerce app with Spring Security implementation and Stripe integration.
+An Angular-Spring Boot ecommerce app with Spring Security implementation and Stripe integration.
