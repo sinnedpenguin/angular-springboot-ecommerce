@@ -1,4 +1,4 @@
-# Angular-Springboot Ecommerce
+# Angular-Spring Boot Ecommerce
 
 **Note:** This project focuses on Spring Security implementation and Stripe integration and does not include a focus on the UI.
 
@@ -28,7 +28,7 @@ cd frontend
 npm install
 ```
 
-### Springboot Backend
+### Spring Boot Backend
 
 **1. Navigate to the `backend` directory:**
 ```shell
